@@ -1,4 +1,4 @@
- #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct disco
@@ -7,6 +7,18 @@ typedef struct disco
 	struct disco* anterior;
 	
 }pilha;
+
+void push(pilha** PontPilha1, int elemento)
+{
+		//aloca uma area de memoria		
+		pilha* newDisco= (pilha*)malloc(sizeof(pilha));
+		//ela recebe o conteudo pra qual pilha original aponta
+		newDisco->anterior= *PontPilha1;
+		//o elemento dela recebe o parametro da funcao
+		newDisco->elemento=elemento;
+		//o conteudo da pilha que aponta sempre pra o topo recebe esse elemento alocado
+		(*PontPilha1)=newDisco;
+}
 
 //inicia a quantidade de discos de acordo com dificuldade
 void primeirosDiscos(pilha** PontPilha,int quantdis)
@@ -21,23 +33,10 @@ void primeirosDiscos(pilha** PontPilha,int quantdis)
 		}
 }
 
-
-void push(pilha** PontPilha1, int elemento)
-{
-		
-		pilha* newDisco= (pilha*)malloc(sizeof(pilha));
-		newDisco->anterior= *PontPilha1;
-
-		newDisco->elemento=elemento;
-
-		(*PontPilha1)=newDisco;
-}
-
 //remove e retorna o elemento do topo
 int pop(pilha** topo)
 {
 	//printf("%i",(*remover)->elemento);
-	
 	//auxiliar recebe topo atual
 	pilha* auxiliar=*topo;
 	//elemento recebe o elemento atual
@@ -48,11 +47,9 @@ int pop(pilha** topo)
 	free(auxiliar);
 
 	return elemento;
-
-
-
 }
 
+//uma funcao que verifica se um ponteiro pra pilha é nula se ela for retona 0 se tiver alguma coisa la retorna 1
 int verifica(pilha* pilhaOriginal)
 {
 	if (pilhaOriginal==NULL)
@@ -93,12 +90,30 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 					{
 						push(pilhaOriginal1,pop(pilhaOriginal));
 					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal1)->elemento>(*pilhaOriginal)->elemento)
+						{
+							push(pilhaOriginal1,pop(pilhaOriginal));
+						} 
+					}
 					break;
 					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
 					case 3:
 					if (verifica(*pilhaOriginal2)==0)
 					{
 						push(pilhaOriginal2,pop(pilhaOriginal));
+					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal2)->elemento>(*pilhaOriginal)->elemento)
+						{
+							push(pilhaOriginal2,pop(pilhaOriginal));
+						} 
 					}
 					break;
 				}
@@ -123,12 +138,30 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 					{
 						push(pilhaOriginal,pop(pilhaOriginal1));
 					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal)->elemento>(*pilhaOriginal1)->elemento)
+						{
+							push(pilhaOriginal,pop(pilhaOriginal1));
+						} 
+					}
 					break;
 					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
 					case 3:
 					if (verifica(*pilhaOriginal2)==0)
 					{
 						push(pilhaOriginal2,pop(pilhaOriginal1));
+					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal2)->elemento>(*pilhaOriginal1)->elemento)
+						{
+							push(pilhaOriginal2,pop(pilhaOriginal1));
+						} 
 					}
 					break;
 				}
@@ -147,11 +180,20 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 				//agora que sabemos que ela tem um disco vamo ver se as proximas está vazia se tiver faz pop direto
 				switch(op2)
 				{
-					//caso a torre selecionada pra receber seja a torre 2 e ela estiver vazia push direto
+					//caso a torre selecionada pra receber seja a torre 1 e ela estiver vazia push direto
 					case 1:
 					if (verifica(*pilhaOriginal)==0)
 					{
 						push(pilhaOriginal,pop(pilhaOriginal2));
+					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal)->elemento>(*pilhaOriginal2)->elemento)
+						{
+							push(pilhaOriginal,pop(pilhaOriginal2));
+						} 
 					}
 					break;
 					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
@@ -159,6 +201,15 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 					if (verifica(*pilhaOriginal1)==0)
 					{
 						push(pilhaOriginal1,pop(pilhaOriginal2));
+					}
+					else
+					{
+						//CASO ELA NAO ESTEJA VAZIA VAMOS VER SE O ELEMENTO DELA É MAIOR QUE O QUE NOS QUER COLOCAR
+
+						if ((*pilhaOriginal1)->elemento>(*pilhaOriginal2)->elemento)
+						{
+							push(pilhaOriginal1,pop(pilhaOriginal2));
+						} 
 					}
 					break;
 				}
@@ -178,7 +229,7 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 }
 
 
-void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2,int quantdis)
+int printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2,int quantdis)
 {
 	pilha* temp= *pilhaOriginal;
 	pilha* temp1= *pilhaOriginal1;
@@ -188,7 +239,7 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 	short int qdiscos=quantdis;
 
 		//AGORA É A HORA DA GAMBIARRA MASTER ULTRA
-		//CRIA UM WHILE PRA NAVEGAR NA PILHA E VER QUANTOS ELEMENTOS VAZIO NOS TEMOS PRA POR OS ZEROS PRIMEIRO
+		//CRIA UM WHILE PRA NAVEGAR NA PILHA E VER QUANTOS ELEMENTOS NOS TEMOS PRA POR OS ZEROS PRIMEIRO
 		
 		do
 		{
@@ -226,6 +277,16 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 		  temp1= *pilhaOriginal1;
 		  temp2=	*pilhaOriginal2;
 
+		  if (p2==quantdis || p3==quantdis)
+		  {
+		  	
+		  	return 0;
+		  }
+
+
+		  p1=quantdis-p1;
+		  p2=quantdis-p2;
+		  p3=quantdis-p3;
 
 		do
 		{
@@ -236,9 +297,10 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 			printf("%i\n",temp->elemento );
 			*/
 
-			if (temp==NULL)
+			if (p1>0)
 			{
 				printf("   0        ");
+				p1--;
 			}
 			else
 			{
@@ -247,9 +309,10 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 			}	
 
 
-			if (temp1==NULL)
+			if (p2>0)
 			{
 				printf("   0         ");
+				p2--;
 			}
 			else
 			{
@@ -257,9 +320,10 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 				temp1=temp1->anterior;
 			}
 
-			if (temp2==NULL)
+			if (p3>0)
 			{
 				printf("0         ");
+				p3--;
 			}
 			else
 			{
@@ -277,6 +341,7 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 		//printf("depois digite o numero da torre que vai receber o disco\n");
 		printf("EX: 1 2\n");
 
+		return 1;
 }
 
 
@@ -319,21 +384,20 @@ int main()
 		quantdis=3;
 		primeirosDiscos(&P1,3);
 	}
-		//printaDisco(&P1,&P2,&P3,quantdis);
+		printaDisco(&P1,&P2,&P3,quantdis);
 		int op1,op2;
 		do
 		{
 			
-			printaDisco(&P1,&P2,&P3,quantdis);
-			
 			scanf("%i %i",&op1,&op2);
-			printf("voce digitou %i %i\n",op1,op2 );
-			//system("clear");
+			
+			system("clear");
 			move(op1,op2,&P1,&P2,&P3);
 			 
-		}while(1);
+		}while(printaDisco(&P1,&P2,&P3,quantdis));
 		
-
+		printf("PARABENS VOCE GANHOU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+		
 
 	
 	return 0;
