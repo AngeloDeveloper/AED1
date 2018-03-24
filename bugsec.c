@@ -11,12 +11,12 @@ typedef struct disco
 //inicia a quantidade de discos de acordo com dificuldade
 void primeirosDiscos(pilha** PontPilha,int quantdis)
 {
-		printf("a quantidade de discos que chegou aqui foi %i \n",quantdis );
+		//printf("a quantidade de discos que chegou aqui foi %i \n",quantdis );
 		
 		int i=quantdis;;
 		for ( i = i; i >0; i--)
 		{
-			printf("chamando a função push pra colocar o numero %i la dentro\n",i );
+			//printf("chamando a função push pra colocar o numero %i la dentro\n",i );
 			push(PontPilha,i);
 		}
 }
@@ -31,22 +31,46 @@ void push(pilha** PontPilha1, int elemento)
 		newDisco->elemento=elemento;
 
 		(*PontPilha1)=newDisco;
-
-	
 }
 
-void printaDisco(pilha** ponteiro)
+
+int pop(pilha** topo)
 {
-	pilha** temp=ponteiro;
+	//printf("%i",(*remover)->elemento);
+	
+	//auxiliar recebe topo atual
+	pilha* auxiliar=*topo;
+	//elemento recebe o elemento atual
+	int elemento=(*topo)->elemento;
+	//topo desce um nível
+	*topo=(*topo)->anterior;
+	//limpa auxiliar que é topo anteriro
+	free(auxiliar);
+
+	return elemento;
 
 
+
+}
+
+
+
+
+void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2)
+{
+	pilha* temp= *pilhaOriginal;
+	pilha* temp1= *pilhaOriginal1;
+	pilha* temp2=	*pilhaOriginal2;
+
+		
 		do
 		{
-			printf("elemento é: %i\n",(*ponteiro)->elemento );
-			*temp=(*temp)->anterior;
+			printf("%i\n",temp->elemento );
+			temp=temp->anterior;
+			printf("%i\n",temp->elemento );
 		}
-		while((*temp)->anterior!=NULL);
-
+		while(temp->anterior!=NULL);
+		
 
 }
 
@@ -70,17 +94,27 @@ int main()
 	{
 		case 'A':
 			primeirosDiscos(&P1,3);
-			printaDisco(&P1);
+			//printf("o topo de P2 é %i \n",P2->elemento);
+		
+			
 		break;
 		case 'B':
 			primeirosDiscos(&P1,5);
-			printaDisco(&P1);
+			
 		break;
 		case 'C':
 			primeirosDiscos(&P1,7);
+			
 		break;
 	}
 
+
+		do
+		{
+
+			printaDisco(&P1,&P2,&P3);
+
+		}while(1);
 
 
 	
