@@ -65,9 +65,44 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 		
 		do
 		{
-			printf("%i\n",temp->elemento );
+
+			/*---	backup--------\\
+			printf("%i ",temp->elemento );
 			temp=temp->anterior;
 			printf("%i\n",temp->elemento );
+			*/
+
+			if (temp==NULL)
+			{
+				printf("0 ");
+			}
+			else
+			{
+				printf("%i ",temp->elemento );
+				temp=temp->anterior;
+			}	
+
+
+			if (temp1==NULL)
+			{
+				printf("0 ");
+			}
+			else
+			{
+
+			}
+
+			if (temp2==NULL)
+			{
+				printf("0");
+			}
+			else
+			{
+
+			}
+
+			printf("\n");
+
 		}
 		while(temp->anterior!=NULL);
 		
@@ -109,12 +144,11 @@ int main()
 	}
 
 
-		do
-		{
+		
 
 			printaDisco(&P1,&P2,&P3);
 
-		}while(1);
+		
 
 
 	
