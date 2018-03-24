@@ -33,7 +33,7 @@ void push(pilha** PontPilha1, int elemento)
 		(*PontPilha1)=newDisco;
 }
 
-
+//remove e retorna o elemento do topo
 int pop(pilha** topo)
 {
 	//printf("%i",(*remover)->elemento);
@@ -53,16 +53,155 @@ int pop(pilha** topo)
 
 }
 
+int verifica(pilha* pilhaOriginal)
+{
+	if (pilhaOriginal==NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
+}
 
 
 
-void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2)
+void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2)
+{
+	if (op1==op2 || op2<0 || op2>3 || op1<0 || op1>3 )
+	{
+		printf("movimento invalido\n");
+		return;
+	}
+
+	
+
+	//escolhe a primeira torre 
+
+	switch(op1)
+		{
+
+		case 1:
+			//caso a primeira torre seja a primeira verifica se ela tem disco se sim prosegue com a troca
+			if(verifica(*pilhaOriginal))
+			{
+				//agora que sabemos que ela tem um disco vamo ver se as proximas está vazia se tiver faz pop direto
+				switch(op2)
+				{
+					//caso a torre selecionada pra receber seja a torre 2 e ela estiver vazia push direto
+					case 2:
+					if (verifica(*pilhaOriginal1)==0)
+					{
+						push(pilhaOriginal1,pop(pilhaOriginal));
+					}
+					break;
+					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
+					case 3:
+					if (verifica(*pilhaOriginal2)==0)
+					{
+						push(pilhaOriginal2,pop(pilhaOriginal));
+					}
+					break;
+				}
+			}
+			else
+			{
+				printf("movimento invalido\n");
+				return;
+			}
+		break;
+
+		case 2:
+			//caso a primeira torre seja a segunda verifica se ela tem disco se sim prosegue com a troca
+			if(verifica(*pilhaOriginal1))
+			{
+
+			}
+			else
+			{
+				printf("movimento invalido\n");
+				return;
+			}
+		break;
+
+		case 3:
+			//casso a primeira torre seja a terceira verifica se ela tem disco se sim prosegue com a troca
+			if(verifica(*pilhaOriginal2))
+			{
+
+			}
+			else
+			{
+				printf("movimento invalido\n");
+				return;
+			}
+		break;
+
+		default:
+
+			printf("movimento invalido\n");
+			return;
+		
+	}
+
+
+
+
+
+}
+
+
+void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOriginal2,int quantdis)
 {
 	pilha* temp= *pilhaOriginal;
 	pilha* temp1= *pilhaOriginal1;
 	pilha* temp2=	*pilhaOriginal2;
 
+
+	short int p1=0,p2=0,p3=0;
+	short int qdiscos=quantdis;
+
+		//AGORA É A HORA DA GAMBIARRA MASTER ULTRA
+		//CRIA UM WHILE PRA NAVEGAR NA PILHA E VER QUANTOS ELEMENTOS VAZIO NOS TEMOS PRA POR OS ZEROS PRIMEIRO
 		
+		do
+		{
+			if (temp!=NULL)
+			{
+				p1++;
+				temp=temp->anterior;
+			}
+			
+
+			if (temp1!=NULL)
+			{
+				p2++;
+				temp1=temp1->anterior;
+			}
+			
+
+			if (temp2!=NULL)
+			{
+				p3++;
+				temp2=temp2->anterior;
+			}
+			
+			qdiscos--;
+
+		}
+		while(qdiscos>0);
+
+
+		//printf("eu sei que tem %i na primeira %i na segunda e %i na terceira \n", p1,p2,p3);
+
+		// esse é o mesmo while de cima so que esse printa sei la
+
+		  temp= *pilhaOriginal;
+		  temp1= *pilhaOriginal1;
+		  temp2=	*pilhaOriginal2;
+
+
 		do
 		{
 
@@ -74,38 +213,44 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 
 			if (temp==NULL)
 			{
-				printf("0 ");
+				printf("   0        ");
 			}
 			else
 			{
-				printf("%i ",temp->elemento );
+				printf("   %i        ",temp->elemento );
 				temp=temp->anterior;
 			}	
 
 
 			if (temp1==NULL)
 			{
-				printf("0 ");
+				printf("   0         ");
 			}
 			else
 			{
-
+				printf("   %i         ",temp1->elemento );
+				temp1=temp1->anterior;
 			}
 
 			if (temp2==NULL)
 			{
-				printf("0");
+				printf("0         ");
 			}
 			else
 			{
-
+				printf("%i        ",temp2->elemento );
+				temp2=temp2->anterior;
 			}
 
 			printf("\n");
+			quantdis--;
 
 		}
-		while(temp->anterior!=NULL);
-		
+		while(quantdis>0);
+		printf("torre 1   torre 2   torre 3\n");
+		//printf("primeiro digite o numero da torre que tem o disco\n");
+		//printf("depois digite o numero da torre que vai receber o disco\n");
+		printf("EX: 1 2\n");
 
 }
 
@@ -116,7 +261,7 @@ int main()
 	pilha* P1 =NULL;
 	pilha* P2 =NULL;
 	pilha* P3 =NULL;
-
+	int quantdis;
 	//Dificuldade
 	char DFC;
 
@@ -128,26 +273,40 @@ int main()
 	switch (DFC)
 	{
 		case 'A':
+			quantdis=3;
 			primeirosDiscos(&P1,3);
 			//printf("o topo de P2 é %i \n",P2->elemento);
 		
 			
 		break;
 		case 'B':
+			quantdis=5;
 			primeirosDiscos(&P1,5);
 			
 		break;
 		case 'C':
+			quantdis=7;
 			primeirosDiscos(&P1,7);
 			
 		break;
+		default:
+		printf("estou vendo que tem dificuldade por padrão (Fácil) foi selecionado\n");
+		quantdis=3;
+		primeirosDiscos(&P1,3);
 	}
-
-
-		
-
-			printaDisco(&P1,&P2,&P3);
-
+		//printaDisco(&P1,&P2,&P3,quantdis);
+		int op1,op2;
+		do
+		{
+			
+			printaDisco(&P1,&P2,&P3,quantdis);
+			
+			scanf("%i %i",&op1,&op2);
+			printf("voce digitou %i %i\n",op1,op2 );
+			//system("clear");
+			move(op1,op2,&P1,&P2,&P3);
+			//printaDisco(&P1,&P2,&P3,quantdis);
+		}while(1);
 		
 
 
