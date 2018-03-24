@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct disco
@@ -75,8 +75,6 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 		return;
 	}
 
-	
-
 	//escolhe a primeira torre 
 
 	switch(op1)
@@ -116,7 +114,24 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 			//caso a primeira torre seja a segunda verifica se ela tem disco se sim prosegue com a troca
 			if(verifica(*pilhaOriginal1))
 			{
-
+				//agora que sabemos que ela tem um disco vamo ver se as proximas está vazia se tiver faz pop direto
+				switch(op2)
+				{
+					//caso a torre selecionada pra receber seja a torre 1 e ela estiver vazia push direto
+					case 1:
+					if (verifica(*pilhaOriginal)==0)
+					{
+						push(pilhaOriginal,pop(pilhaOriginal1));
+					}
+					break;
+					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
+					case 3:
+					if (verifica(*pilhaOriginal2)==0)
+					{
+						push(pilhaOriginal2,pop(pilhaOriginal1));
+					}
+					break;
+				}
 			}
 			else
 			{
@@ -129,7 +144,24 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 			//casso a primeira torre seja a terceira verifica se ela tem disco se sim prosegue com a troca
 			if(verifica(*pilhaOriginal2))
 			{
-
+				//agora que sabemos que ela tem um disco vamo ver se as proximas está vazia se tiver faz pop direto
+				switch(op2)
+				{
+					//caso a torre selecionada pra receber seja a torre 2 e ela estiver vazia push direto
+					case 1:
+					if (verifica(*pilhaOriginal)==0)
+					{
+						push(pilhaOriginal,pop(pilhaOriginal2));
+					}
+					break;
+					//caso a torre selecionada pra receber seja a torre 3 e ela estiver vazia push direto
+					case 2:
+					if (verifica(*pilhaOriginal1)==0)
+					{
+						push(pilhaOriginal1,pop(pilhaOriginal2));
+					}
+					break;
+				}
 			}
 			else
 			{
@@ -141,14 +173,8 @@ void move(int op1,int op2,pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** p
 		default:
 
 			printf("movimento invalido\n");
-			return;
-		
+			return;	
 	}
-
-
-
-
-
 }
 
 
@@ -157,7 +183,6 @@ void printaDisco(pilha** pilhaOriginal,pilha** pilhaOriginal1,pilha** pilhaOrigi
 	pilha* temp= *pilhaOriginal;
 	pilha* temp1= *pilhaOriginal1;
 	pilha* temp2=	*pilhaOriginal2;
-
 
 	short int p1=0,p2=0,p3=0;
 	short int qdiscos=quantdis;
@@ -305,7 +330,7 @@ int main()
 			printf("voce digitou %i %i\n",op1,op2 );
 			//system("clear");
 			move(op1,op2,&P1,&P2,&P3);
-			//printaDisco(&P1,&P2,&P3,quantdis);
+			 
 		}while(1);
 		
 
